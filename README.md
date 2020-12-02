@@ -8,6 +8,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/transportData)](https://CRAN.R-project.org/package=transportData)
+[![R-CMD-check](https://github.com/ITSLeeds/transportData/workflows/R-CMD-check/badge.svg)](https://github.com/ITSLeeds/transportData/actions)
 <!-- badges: end -->
 
 The goal of transportData is to provide example transport datasets for
@@ -25,6 +26,15 @@ Install the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("devtools")
 devtools::install_github("ITSLeeds/transportData")
+```
+
+## Datasets
+
+The datasets included to date are outlined below:
+
+``` r
+dim(transportData::od_leeds_50)
+#> [1] 948  18
 ```
 
 ## Code of Conduct

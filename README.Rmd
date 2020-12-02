@@ -38,6 +38,14 @@ Install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("ITSLeeds/transportData")
 ```  
 
+## Datasets
+
+The datasets included to date are outlined below:
+
+```{r}
+dim(transportData::od_leeds_50)
+```
+
 ## Code of Conduct
   
 Please note that the transportData project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
