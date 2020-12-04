@@ -1,4 +1,4 @@
-Package: transportData
+Package: transportdata
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
@@ -19,4 +19,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
-URL: https://itsleeds.github.io/transportData
+URL: https://itsleeds.github.io/transportdata

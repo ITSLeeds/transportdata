@@ -1,5 +1,9 @@
 ---
-output: github_document
+title: transportdata
+output:
+  github_document:
+    number_sections: true
+    toc: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -13,40 +17,78 @@ knitr::opts_chunk$set(
 )
 ```
 
-# transportData
-
 <!-- badges: start -->
 <!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) -->
-[![CRAN status](https://www.r-pkg.org/badges/version/transportData)](https://CRAN.R-project.org/package=transportData)
-[![R-CMD-check](https://github.com/ITSLeeds/transportData/workflows/R-CMD-check/badge.svg)](https://github.com/ITSLeeds/transportData/actions)
-[![Codecov test coverage](https://codecov.io/gh/ITSLeeds/transportData/branch/master/graph/badge.svg)](https://codecov.io/gh/ITSLeeds/transportData?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/transportdata)](https://CRAN.R-project.org/package=transportdata)
+[![R-CMD-check](https://github.com/ITSLeeds/transportdata/workflows/R-CMD-check/badge.svg)](https://github.com/ITSLeeds/transportdata/actions)
+<!-- [![Codecov test coverage](https://codecov.io/gh/ITSLeeds/transportdata/branch/master/graph/badge.svg)](https://codecov.io/gh/ITSLeeds/transportdata?branch=master) -->
 <!-- badges: end -->
 
-The goal of transportData is to provide example transport datasets for teaching, research and software development.
 
-## Installation
+`transportdata` is a package containing transport datasets for teaching, methodological research and software development (e.g. for benchmarking).
+Simply put, the aim is for it to be like `spData`, a package used for teaching and demonstrating spatial data methods, but for transport/mobility researchers using R.
 
-<!-- You can install the released version of transportData from [CRAN](https://CRAN.R-project.org) with: -->
+# Installation
+
+<!-- You can install the released version of transportdata from [CRAN](https://CRAN.R-project.org) with: -->
 
 <!-- ``` r -->
-<!-- install.packages("transportData") -->
+<!-- install.packages("transportdata") -->
 <!-- ``` -->
 
 Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ITSLeeds/transportData")
+devtools::install_github("ITSLeeds/transportdata")
 ```  
 
-## Datasets
+# Datasets
 
-The datasets included to date are outlined below:
+The datasets included in the package, and code chunks used to create them, are outlined below.
+To reproduce the following code, you will need to to have installed a number of packages.
+The following packages must be loaded:
 
-```{r}
-dim(transportData::od_leeds_50)
+```{r, message=FALSE}
+library(dplyr)
 ```
 
-## Code of Conduct
+## Origin-destination data
+
+OD data is arguably the most fundamental type of data for representing city to global transport systems.
+The OD dataset used for this package represents the number of commutes between a subset of desire lines between administrative zones in Leeds, UK.
+The dataset was generated as follows:
+
+```{r, eval=FALSE}
+od_data = pct::get_od()
+# [1] 2402201
+nrow(od_data)
+od_data_leeds = od_data %>% 
+  filter(la_1 == "Leeds") %>% 
+  filter(la_1 == "Leeds") 
+nrow(od_data_leeds)
+# [1] 35463
+od_leeds_50 = od_data_leeds %>% 
+  filter(all >= 50)
+usethis::use_data(od_leeds_50, overwrite = TRUE)
+```
+
+
+```{r}
+dim(transportdata::od_leeds_50)
+```
+
+## Centroid data
+
+```{r}
+centroids = pct::get_centroids_ew()
+centroids_leeds = centroids %>% 
+  select(geo_code = msoa11cd) %>% 
+  filter(geo_code %in% od_data_leeds$geo_code1)
+usethis::use_data(centroids_leeds)
+```
+
+
+# Code of Conduct
   
-Please note that the transportData project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the transportdata project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

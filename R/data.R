@@ -31,3 +31,18 @@
 #' hist(od_leeds_50$foot)
 #' hist(od_leeds_50$bicycle)
 "od_leeds_50"
+
+#' @title Centroids of administrative (MSOA) zones in Leeds, UK
+#' @description This dataset contains population-weighted centroids in
+#' administrative (MSOA) zones in Leeds, UK
+#' @format A spatial (sf) data frame with 107 rows and 1 variable:
+#' \describe{
+#'   \item{\code{geo_code}}{character geo_code of the unique zones}
+#'}
+#' @details DETAILS
+#' @examples
+#' centroids_leeds
+#' dim(centroids_leeds)
+#' plot(centroids_leeds)
+"od_leeds_50"
+
