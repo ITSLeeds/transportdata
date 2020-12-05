@@ -1,18 +1,19 @@
 Package: transportdata
-Title: What the Package Does (One Line, Title Case)
+Title: Transport Datasets For Teaching, Methodological Research And Software Development
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    c(
+    person("Robin", "Lovelace", email = "rob00x@gmail.com", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0001-5679-6536"))
+      )
+Description: Provides open access datasets representing common data structures in transport planning.
+  The primary aim is teaching but the datasets should also be useful for testing or benchmarking
+  new methods.
 License: MIT + file LICENSE
 Suggests: 
-    testthat (>= 3.0.0),
-    covr
-Config/testthat/edition: 3
+    sf,
+    pct,
+    dplyr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
