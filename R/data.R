@@ -25,11 +25,12 @@
 #'}
 #' @details DETAILS
 #' @examples
-#' od_leeds_50
 #' dim(od_leeds_50)
-#' hist(od_leeds_50$all)
-#' hist(od_leeds_50$foot)
-#' hist(od_leeds_50$bicycle)
+#' b = seq(0, 2000, by = 100)
+#' head(od_leeds_50)
+#' hist(od_leeds_50$all, breaks = b)
+#' hist(od_leeds_50$foot, breaks = b)
+#' hist(od_leeds_50$bicycle, breaks = b)
 "od_leeds_50"
 
 #' @title Centroids of administrative (MSOA) zones in Leeds, UK
@@ -43,6 +44,7 @@
 #' @examples
 #' centroids_leeds
 #' dim(centroids_leeds)
+#' library(sf)
 #' plot(centroids_leeds)
-"od_leeds_50"
+"centroids_leeds"
 
