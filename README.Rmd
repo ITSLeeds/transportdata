@@ -84,8 +84,9 @@ dim(transportdata::od_leeds_50)
 centroids = pct::get_centroids_ew()
 centroids_leeds = centroids %>% 
   select(geo_code = msoa11cd) %>% 
-  filter(geo_code %in% od_data_leeds$geo_code1)
-usethis::use_data(centroids_leeds)
+  filter(geo_code %in% od_data_leeds$geo_code1) %>% 
+  sf::st_transform(4326)
+usethis::use_data(centroids_leeds, overwrite = TRUE)
 ```
 
 
