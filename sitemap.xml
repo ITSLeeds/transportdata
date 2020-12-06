@@ -4,6 +4,9 @@
     <loc>https://itsleeds.github.io/transportdata/index.html</loc>
   </url>
   <url>
-    <loc>https://itsleeds.github.io/transportdata/reference/od_leeds_50.html</loc>
+    <loc>https://itsleeds.github.io/transportdata/reference/centroids_leeds.html</loc>
+  </url>
+  <url>
+    <loc>https://itsleeds.github.io/transportdata/reference/od_leeds.html</loc>
   </url>
 </urlset>
