@@ -58,6 +58,7 @@ To reproduce the following code, you will need to to have installed a number of 
 The following packages must also be loaded:
 
 ```{r, message=FALSE}
+library(sf)
 library(dplyr)
 library(stplanr)
 ```
@@ -89,7 +90,7 @@ dim(transportdata::od_leeds)
 
 ## Centroid data
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 centroids = pct::get_centroids_ew()
 centroids_leeds = centroids %>% 
   filter(stringr::str_detect(string = msoa11nm, pattern = "Leeds")) %>% 
@@ -98,25 +99,47 @@ centroids_leeds = centroids %>%
 usethis::use_data(centroids_leeds, overwrite = TRUE)
 ```
 
-```{r}
+```{r centroids}
 dim(centroids_leeds)
+names(centroids_leeds)
+plot(centroids_leeds)
 ```
-
 
 ## Route data
 
 The route data was generated as follows:
 
-```{r}
+```{r desire}
 od_interzonal = od_leeds %>% 
   filter(geo_code1 != geo_code2)
 desire_lines_leeds = od::od_to_sf(od_interzonal, centroids_leeds)
+desire_lines_leeds_10 = desire_lines_leeds %>% 
+  top_n(n = 10, wt = all)
+plot(desire_lines_leeds_10)
+```
 
-summary(sf::st_length(desire_lines_leeds))
+```{r, eval=FALSE}
+# get route data for top 10 routes for different modes
+routes_leeds_foot_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "foot")
+routes_leeds_bike_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "bike")
+routes_leeds_car_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "car")
+```
+
+```{r, eval=FALSE, echo=FALSE}
+usethis::use_data(routes_leeds_foot_10)
+usethis::use_data(routes_leeds_bike_10)
+usethis::use_data(routes_leeds_car_10)
+```
+
+```{r routes-10}
+plot(routes_leeds_foot_10$geometry, lwd = 6, col = "green")
+plot(routes_leeds_bike_10$geometry, lwd = 4, col = "blue", add = TRUE)
+plot(routes_leeds_car_10$geometry, lwd = 2, col = "red", add = TRUE)
 ```
 
 
-```{r, eval=FALSE, eval=FALSE}
+
+```{r, eval=FALSE, echo=FALSE}
 routes_leeds_foot = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
 saveRDS(routes_leeds_foot, "routes_leeds_foot.Rds")
 piggyback::pb_upload("routes_leeds_foot.Rds")
@@ -130,6 +153,10 @@ saveRDS(routes_leeds_car, "routes_leeds_car.Rds")
 piggyback::pb_upload("routes_leeds_car.Rds")
 
 ```
+
+
+
+You can get the full routes as follows:
 
 ```{r routes-read}
 routes_leeds_foot = get_td("routes_leeds_foot")

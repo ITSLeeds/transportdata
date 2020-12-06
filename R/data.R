@@ -23,7 +23,6 @@
 #'   \item{\code{la_1}}{character Local authority of origin}
 #'   \item{\code{la_2}}{character Local authority of destination}
 #'}
-#' @details DETAILS
 #' @examples
 #' dim(od_leeds)
 #' b = seq(0, 2000, by = 100)
@@ -40,7 +39,6 @@
 #' \describe{
 #'   \item{\code{geo_code}}{character geo_code of the unique zones}
 #'}
-#' @details DETAILS
 #' @examples
 #' centroids_leeds
 #' dim(centroids_leeds)
@@ -48,3 +46,19 @@
 #' plot(centroids_leeds)
 "centroids_leeds"
 
+
+#' @title Routes on the transport network
+#' @description This dataset represents routes associated with the top 10
+#'   commuter 'desire lines' in Leeds.
+#' @format A data frame with 10 rows and 22 variables:
+#' \describe{
+#'   \item{\code{distance}}{double Distance in m according to OSRM}
+#'   \item{\code{duration}}{double Duration in seconds according to OSRM}
+#'   \item{\code{geometry}}{list Geometry}
+#'}
+#' @aliases routes_leeds_bike_10 routes_leeds_car_10
+#' @examples
+#' plot(routes_leeds_foot_10$geometry, lwd = 6, col = "green")
+#' plot(routes_leeds_bike_10$geometry, lwd = 4, col = "blue", add = TRUE)
+#' plot(routes_leeds_car_10$geometry, lwd = 2, col = "red", add = TRUE)
+"routes_leeds_foot_10"

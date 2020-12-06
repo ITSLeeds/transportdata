@@ -54,6 +54,7 @@ To reproduce the following code, you will need to to have installed a
 number of packages. The following packages must also be loaded:
 
 ``` r
+library(sf)
 library(dplyr)
 library(stplanr)
 ```
@@ -88,18 +89,14 @@ dim(transportdata::od_leeds)
 ## 2.2 Centroid data
 
 ``` r
-centroids = pct::get_centroids_ew()
-centroids_leeds = centroids %>% 
-  filter(stringr::str_detect(string = msoa11nm, pattern = "Leeds")) %>% 
-  select(geo_code = msoa11cd) %>% 
-  sf::st_transform(4326)
-usethis::use_data(centroids_leeds, overwrite = TRUE)
-```
-
-``` r
 dim(centroids_leeds)
 #> [1] 107   2
+names(centroids_leeds)
+#> [1] "geo_code" "geometry"
+plot(centroids_leeds)
 ```
+
+<img src="man/figures/README-centroids-1.png" width="100%" />
 
 ## 2.3 Route data
 
@@ -112,26 +109,31 @@ desire_lines_leeds = od::od_to_sf(od_interzonal, centroids_leeds)
 #> 0 origins with no match in zone ids
 #> 0 destinations with no match in zone ids
 #>  points not in od data removed.
+desire_lines_leeds_10 = desire_lines_leeds %>% 
+  top_n(n = 10, wt = all)
+plot(desire_lines_leeds_10)
+#> Warning: plotting the first 10 out of 18 attributes; use max.plot = 18 to plot
+#> all
+```
 
-summary(sf::st_length(desire_lines_leeds))
-#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0
-#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>     595    1878    3493    4219    5809   18409
+<img src="man/figures/README-desire-1.png" width="100%" />
+
+``` r
+# get route data for top 10 routes for different modes
+routes_leeds_foot_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "foot")
+routes_leeds_bike_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "bike")
+routes_leeds_car_10 = route(l = desire_lines_leeds_10, route_fun = route_osrm, osrm.profile = "car")
 ```
 
 ``` r
-routes_leeds_foot = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
-saveRDS(routes_leeds_foot, "routes_leeds_foot.Rds")
-piggyback::pb_upload("routes_leeds_foot.Rds")
-
-routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "bike")
-saveRDS(routes_leeds_bike, "routes_leeds_bike.Rds")
-piggyback::pb_upload("routes_leeds_bike.Rds")
-
-routes_leeds_car = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "car")
-saveRDS(routes_leeds_car, "routes_leeds_car.Rds")
-piggyback::pb_upload("routes_leeds_car.Rds")
+plot(routes_leeds_foot_10$geometry, lwd = 6, col = "green")
+plot(routes_leeds_bike_10$geometry, lwd = 4, col = "blue", add = TRUE)
+plot(routes_leeds_car_10$geometry, lwd = 2, col = "red", add = TRUE)
 ```
+
+<img src="man/figures/README-routes-10-1.png" width="100%" />
+
+You can get the full routes as follows:
 
 ``` r
 routes_leeds_foot = get_td("routes_leeds_foot")

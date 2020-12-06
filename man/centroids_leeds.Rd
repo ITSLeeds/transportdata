@@ -17,9 +17,6 @@ centroids_leeds
 This dataset contains population-weighted centroids in
 administrative (MSOA) zones in Leeds, UK
 }
-\details{
-DETAILS
-}
 \examples{
 centroids_leeds
 dim(centroids_leeds)

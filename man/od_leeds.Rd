@@ -35,9 +35,6 @@ This dataset represents movement between administrative 'MSOA'
 zones in Leeds, UK. The data was collected in the 2011 Census and reports
 the mode of travel to work.
 }
-\details{
-DETAILS
-}
 \examples{
 dim(od_leeds)
 b = seq(0, 2000, by = 100)
