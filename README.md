@@ -43,9 +43,15 @@ devtools::install_github("ITSLeeds/transportdata")
 # 2 Datasets
 
 The datasets included in the package, and code chunks used to create
-them, are outlined below. To reproduce the following code, you will need
-to to have installed a number of packages. The following packages must
-be loaded:
+them, are outlined below. After you have installed the package, the
+datasets should be available.
+
+``` r
+library(transportdata)
+```
+
+To reproduce the following code, you will need to to have installed a
+number of packages. The following packages must also be loaded:
 
 ``` r
 library(dplyr)
@@ -83,24 +89,11 @@ dim(transportdata::od_leeds)
 
 ``` r
 centroids = pct::get_centroids_ew()
-#> 
-#> ── Column specification ────────────────────────────────────────────────────────
-#> cols(
-#>   MSOA11CD = col_character(),
-#>   MSOA11NM = col_character(),
-#>   BNGEAST = col_double(),
-#>   BNGNORTH = col_double(),
-#>   LONGITUDE = col_double(),
-#>   LATITUDE = col_double()
-#> )
 centroids_leeds = centroids %>% 
   filter(stringr::str_detect(string = msoa11nm, pattern = "Leeds")) %>% 
   select(geo_code = msoa11cd) %>% 
   sf::st_transform(4326)
 usethis::use_data(centroids_leeds, overwrite = TRUE)
-#> ✔ Setting active project to '/mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/itsleeds/transportdata'
-#> ✔ Saving 'centroids_leeds' to 'data/centroids_leeds.rda'
-#> ● Document your data (see 'https://r-pkgs.org/data.html')
 ```
 
 ``` r
@@ -110,32 +103,55 @@ dim(centroids_leeds)
 
 ## 2.3 Route data
 
+The route data was generated as follows:
+
 ``` r
-desire_lines_leeds = od::od_to_sf(od_leeds, centroids_leeds)
-routes_leeds_walk = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
-mapview::mapview(routes_leeds_walk)
-saveRDS(routes_leeds_walk, "routes_leeds_walk.Rds")
-file.size("routes_leeds_walk.Rds") / 1e6 # 1.6 mb!
-rnet_leeds_walk = overline(routes_leeds_walk, "foot")
-plot(rnet_leeds_walk["foot"], lwd = rnet_leeds_walk$foot / 500)
-piggyback::pb_upload("routes_leeds_walk.Rds")
+od_interzonal = od_leeds %>% 
+  filter(geo_code1 != geo_code2)
+desire_lines_leeds = od::od_to_sf(od_interzonal, centroids_leeds)
+#> 0 origins with no match in zone ids
+#> 0 destinations with no match in zone ids
+#>  points not in od data removed.
+
+summary(sf::st_length(desire_lines_leeds))
+#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>     595    1878    3493    4219    5809   18409
+```
+
+``` r
+routes_leeds_foot = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
+saveRDS(routes_leeds_foot, "routes_leeds_foot.Rds")
+piggyback::pb_upload("routes_leeds_foot.Rds")
 
 routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "bike")
 saveRDS(routes_leeds_bike, "routes_leeds_bike.Rds")
-file.size("routes_leeds_bike.Rds") / 1e6 
-rnet_leeds_bike = overline(routes_leeds_bike, "bicycle")
-plot(rnet_leeds_bike["bicycle"], lwd = rnet_leeds_bike$bicycle / 500)
 piggyback::pb_upload("routes_leeds_bike.Rds")
 
 routes_leeds_car = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "car")
 saveRDS(routes_leeds_car, "routes_leeds_car.Rds")
-file.size("routes_leeds_car.Rds") / 1e6 
+piggyback::pb_upload("routes_leeds_car.Rds")
+```
+
+``` r
+routes_leeds_foot = get_td("routes_leeds_foot")
+#> Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_foot.Rds
+routes_leeds_bike = get_td("routes_leeds_bike")
+#> Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_bike.Rds
+routes_leeds_car = get_td("routes_leeds_car")
+#> Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_car.Rds
+```
+
+``` r
+rnet_leeds_foot = overline(routes_leeds_foot, "foot")
+plot(rnet_leeds_foot["foot"], lwd = rnet_leeds_foot$foot / 500)
+rnet_leeds_bike = overline(routes_leeds_bike, "bicycle")
+plot(rnet_leeds_bike["bicycle"], lwd = rnet_leeds_bike$bicycle / 500)
 rnet_leeds_car = overline(routes_leeds_car, "car_driver")
 plot(rnet_leeds_car["car_driver"], lwd = rnet_leeds_car$car_driver / 500)
-piggyback::pb_upload("routes_leeds_car.Rds")
-
-routes_leeds_walk = routes
 ```
+
+<img src="man/figures/README-routes-rnet-1.png" width="33%" /><img src="man/figures/README-routes-rnet-2.png" width="33%" /><img src="man/figures/README-routes-rnet-3.png" width="33%" />
 
 # 3 Code of Conduct
 
