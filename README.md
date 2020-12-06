@@ -42,7 +42,7 @@ devtools::install_github("ITSLeeds/transportdata")
 The datasets included to date are outlined below:
 
 ``` r
-dim(transportdata::od_leeds_50)
+dim(transportdata::od_leeds)
 #> [1] 948  18
 ```
 

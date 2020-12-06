@@ -51,6 +51,7 @@ The following packages must be loaded:
 
 ```{r, message=FALSE}
 library(dplyr)
+library(stplanr)
 ```
 
 ## Origin-destination data
@@ -65,17 +66,17 @@ od_data = pct::get_od()
 nrow(od_data)
 od_data_leeds = od_data %>% 
   filter(la_1 == "Leeds") %>% 
-  filter(la_1 == "Leeds") 
+  filter(la_2 == "Leeds") 
 nrow(od_data_leeds)
 # [1] 35463
-od_leeds_50 = od_data_leeds %>% 
+od_leeds = od_data_leeds %>% 
   filter(all >= 50)
-usethis::use_data(od_leeds_50, overwrite = TRUE)
+usethis::use_data(od_leeds, overwrite = TRUE)
 ```
 
 
 ```{r}
-dim(transportdata::od_leeds_50)
+dim(transportdata::od_leeds)
 ```
 
 ## Centroid data
@@ -83,11 +84,45 @@ dim(transportdata::od_leeds_50)
 ```{r}
 centroids = pct::get_centroids_ew()
 centroids_leeds = centroids %>% 
+  filter(stringr::str_detect(string = msoa11nm, pattern = "Leeds")) %>% 
   select(geo_code = msoa11cd) %>% 
-  filter(geo_code %in% od_data_leeds$geo_code1) %>% 
   sf::st_transform(4326)
 usethis::use_data(centroids_leeds, overwrite = TRUE)
 ```
+
+```{r}
+dim(centroids_leeds)
+```
+
+
+## Route data
+
+```{r}
+desire_lines_leeds = od::od_to_sf(od_leeds, centroids_leeds)
+routes_leeds_walk = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
+mapview::mapview(routes_leeds_walk)
+saveRDS(routes_leeds_walk, "routes_leeds_walk.Rds")
+file.size("routes_leeds_walk.Rds") / 1e6 # 1.6 mb!
+rnet_leeds_walk = overline(routes_leeds_walk, "foot")
+plot(rnet_leeds_walk["foot"], lwd = rnet_leeds_walk$foot / 500)
+piggyback::pb_upload("routes_leeds_walk.Rds")
+
+routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "bike")
+saveRDS(routes_leeds_bike, "routes_leeds_bike.Rds")
+file.size("routes_leeds_bike.Rds") / 1e6 # 1.6 mb!
+rnet_leeds_bike = overline(routes_leeds_bike, "bicycle")
+plot(rnet_leeds_bike["bicycle"], lwd = rnet_leeds_bike$bicycle / 500)
+piggyback::pb_upload("routes_leeds_bike.Rds")
+
+routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "car")
+saveRDS(routes_leeds_car, "routes_leeds_car.Rds")
+file.size("routes_leeds_car.Rds") / 1e6 # 1.6 mb!
+rnet_leeds_car = overline(routes_leeds_car, "car_driver")
+plot(rnet_leeds_car["car_driver"], lwd = rnet_leeds_car$car_driver / 500)
+piggyback::pb_upload("routes_leeds_car.Rds")
+
+```
+
 
 
 # Code of Conduct

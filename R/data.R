@@ -25,13 +25,13 @@
 #'}
 #' @details DETAILS
 #' @examples
-#' dim(od_leeds_50)
+#' dim(od_leeds)
 #' b = seq(0, 2000, by = 100)
-#' head(od_leeds_50)
-#' hist(od_leeds_50$all, breaks = b)
-#' hist(od_leeds_50$foot, breaks = b)
-#' hist(od_leeds_50$bicycle, breaks = b)
-"od_leeds_50"
+#' head(od_leeds)
+#' hist(od_leeds$all, breaks = b)
+#' hist(od_leeds$foot, breaks = b)
+#' hist(od_leeds$bicycle, breaks = b)
+"od_leeds"
 
 #' @title Centroids of administrative (MSOA) zones in Leeds, UK
 #' @description This dataset contains population-weighted centroids in
