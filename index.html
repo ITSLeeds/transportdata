@@ -66,27 +66,23 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#transportdata" class="anchor"></a>transportdata</h1></div>
 <ul>
+<li><a href="#installation">1 Installation</a></li>
 <li>
-<a href="#transportdata">transportdata</a>
+<a href="#datasets">2 Datasets</a>
 <ul>
-<li><a href="#installation">0.1 Installation</a></li>
-<li><a href="#datasets">0.2 Datasets</a></li>
-<li><a href="#code-of-conduct">0.3 Code of Conduct</a></li>
+<li><a href="#origin-destination-data">2.1 Origin-destination data</a></li>
+<li><a href="#centroid-data">2.2 Centroid data</a></li>
+<li><a href="#route-data">2.3 Route data</a></li>
 </ul>
 </li>
+<li><a href="#code-of-conduct">3 Code of Conduct</a></li>
 </ul>
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file --><!-- badges: start --><!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) -->
+<p><code>transportdata</code> is a package containing transport datasets for teaching, methodological research and software development (e.g. for benchmarking). The aim is for it to be for people working with transport data what <code>spData</code>, a package used for teaching and demonstrating spatial data methods, is for people working with spatial data. The package will be especially useful for transport/mobility researchers using R.</p>
 </div>
-<div id="transportdata-1" class="section level1">
+<div id="1-installation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#transportdata-1" class="anchor"></a>transportdata</h1>
-<!-- badges: start -->
-<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) -->
-
-<p>The goal of transportdata is to provide example transport datasets for teaching, research and software development.</p>
-<div id="01-installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#01-installation" class="anchor"></a>0.1 Installation</h2>
+<a href="#1-installation" class="anchor"></a>1 Installation</h1>
 <!-- You can install the released version of transportdata from [CRAN](https://CRAN.R-project.org) with: -->
 <!-- ``` r -->
 <!-- install.packages("transportdata") -->
@@ -96,19 +92,94 @@
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ITSLeeds/transportdata"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="02-datasets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#02-datasets" class="anchor"></a>0.2 Datasets</h2>
-<p>The datasets included to date are outlined below:</p>
+<div id="2-datasets" class="section level1">
+<h1 class="hasAnchor">
+<a href="#2-datasets" class="anchor"></a>2 Datasets</h1>
+<p>The datasets included in the package, and code chunks used to create them, are outlined below. To reproduce the following code, you will need to to have installed a number of packages. The following packages must be loaded:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/stplanr">stplanr</a></span><span class="op">)</span></code></pre></div>
+<div id="21-origin-destination-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#21-origin-destination-data" class="anchor"></a>2.1 Origin-destination data</h2>
+<p>OD data is arguably the most fundamental type of data for representing city to global transport systems. The OD dataset used for this package represents the number of commutes between a subset of desire lines between administrative zones in Leeds, UK. The dataset was generated as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">od_data</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_od.html">get_od</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co"># [1] 2402201</span>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">od_data</span><span class="op">)</span>
+<span class="va">od_data_leeds</span> <span class="op">=</span> <span class="va">od_data</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">la_1</span> <span class="op">==</span> <span class="st">"Leeds"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">la_2</span> <span class="op">==</span> <span class="st">"Leeds"</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">od_data_leeds</span><span class="op">)</span>
+<span class="co"># [1] 35463</span>
+<span class="va">od_leeds</span> <span class="op">=</span> <span class="va">od_data_leeds</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">all</span> <span class="op">&gt;=</span> <span class="fl">50</span><span class="op">)</span>
+<span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">od_leeds</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="fu">transportdata</span><span class="fu">::</span><span class="va"><a href="reference/od_leeds.html">od_leeds</a></span><span class="op">)</span>
 <span class="co">#&gt; [1] 948  18</span></code></pre></div>
 </div>
-<div id="03-code-of-conduct" class="section level2">
+<div id="22-centroid-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#03-code-of-conduct" class="anchor"></a>0.3 Code of Conduct</h2>
-<p>Please note that the transportdata project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<a href="#22-centroid-data" class="anchor"></a>2.2 Centroid data</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">centroids</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_centroids_ew.html">get_centroids_ew</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; cols(</span>
+<span class="co">#&gt;   MSOA11CD = col_character(),</span>
+<span class="co">#&gt;   MSOA11NM = col_character(),</span>
+<span class="co">#&gt;   BNGEAST = col_double(),</span>
+<span class="co">#&gt;   BNGNORTH = col_double(),</span>
+<span class="co">#&gt;   LONGITUDE = col_double(),</span>
+<span class="co">#&gt;   LATITUDE = col_double()</span>
+<span class="co">#&gt; )</span>
+<span class="va">centroids_leeds</span> <span class="op">=</span> <span class="va">centroids</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span>string <span class="op">=</span> <span class="va">msoa11nm</span>, pattern <span class="op">=</span> <span class="st">"Leeds"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>geo_code <span class="op">=</span> <span class="va">msoa11cd</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span>
+<span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">centroids_leeds</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; ✔ Setting active project to '/mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/itsleeds/transportdata'</span>
+<span class="co">#&gt; ✔ Saving 'centroids_leeds' to 'data/centroids_leeds.rda'</span>
+<span class="co">#&gt; ● Document your data (see 'https://r-pkgs.org/data.html')</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">centroids_leeds</span><span class="op">)</span>
+<span class="co">#&gt; [1] 107   2</span></code></pre></div>
 </div>
+<div id="23-route-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#23-route-data" class="anchor"></a>2.3 Route data</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">desire_lines_leeds</span> <span class="op">=</span> <span class="fu">od</span><span class="fu">::</span><span class="fu">od_to_sf</span><span class="op">(</span><span class="va">od_leeds</span>, <span class="va">centroids_leeds</span><span class="op">)</span>
+<span class="va">routes_leeds_walk</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"foot"</span><span class="op">)</span>
+<span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">routes_leeds_walk</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">routes_leeds_walk</span>, <span class="st">"routes_leeds_walk.Rds"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/file.info.html">file.size</a></span><span class="op">(</span><span class="st">"routes_leeds_walk.Rds"</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span> <span class="co"># 1.6 mb!</span>
+<span class="va">rnet_leeds_walk</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_walk</span>, <span class="st">"foot"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rnet_leeds_walk</span><span class="op">[</span><span class="st">"foot"</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="va">rnet_leeds_walk</span><span class="op">$</span><span class="va">foot</span> <span class="op">/</span> <span class="fl">500</span><span class="op">)</span>
+<span class="fu">piggyback</span><span class="fu">::</span><span class="fu">pb_upload</span><span class="op">(</span><span class="st">"routes_leeds_walk.Rds"</span><span class="op">)</span>
+
+<span class="va">routes_leeds_bike</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"bike"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">routes_leeds_bike</span>, <span class="st">"routes_leeds_bike.Rds"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/file.info.html">file.size</a></span><span class="op">(</span><span class="st">"routes_leeds_bike.Rds"</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span> 
+<span class="va">rnet_leeds_bike</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_bike</span>, <span class="st">"bicycle"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rnet_leeds_bike</span><span class="op">[</span><span class="st">"bicycle"</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="va">rnet_leeds_bike</span><span class="op">$</span><span class="va">bicycle</span> <span class="op">/</span> <span class="fl">500</span><span class="op">)</span>
+<span class="fu">piggyback</span><span class="fu">::</span><span class="fu">pb_upload</span><span class="op">(</span><span class="st">"routes_leeds_bike.Rds"</span><span class="op">)</span>
+
+<span class="va">routes_leeds_car</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"car"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">routes_leeds_car</span>, <span class="st">"routes_leeds_car.Rds"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/file.info.html">file.size</a></span><span class="op">(</span><span class="st">"routes_leeds_car.Rds"</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span> 
+<span class="va">rnet_leeds_car</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_car</span>, <span class="st">"car_driver"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rnet_leeds_car</span><span class="op">[</span><span class="st">"car_driver"</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="va">rnet_leeds_car</span><span class="op">$</span><span class="va">car_driver</span> <span class="op">/</span> <span class="fl">500</span><span class="op">)</span>
+<span class="fu">piggyback</span><span class="fu">::</span><span class="fu">pb_upload</span><span class="op">(</span><span class="st">"routes_leeds_car.Rds"</span><span class="op">)</span>
+
+<span class="va">routes_leeds_walk</span> <span class="op">=</span> <span class="va">routes</span></code></pre></div>
+</div>
+</div>
+<div id="3-code-of-conduct" class="section level1">
+<h1 class="hasAnchor">
+<a href="#3-code-of-conduct" class="anchor"></a>3 Code of Conduct</h1>
+<p>Please note that the transportdata project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 
   </div>
@@ -140,7 +211,6 @@
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=transportdata"><img src="https://www.r-pkg.org/badges/version/transportdata" alt="CRAN status"></a></li>
 <li><a href="https://github.com/ITSLeeds/transportdata/actions"><img src="https://github.com/ITSLeeds/transportdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/ITSLeeds/transportdata?branch=master"><img src="https://codecov.io/gh/ITSLeeds/transportdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
