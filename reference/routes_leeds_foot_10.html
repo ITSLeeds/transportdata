@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • transportdata</title>
+<title>Routes on the transport network — routes_leeds_foot_10 • transportdata</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Routes on the transport network — routes_leeds_foot_10" />
+<meta property="og:description" content="This dataset represents routes associated with the top 10
+commuter 'desire lines' in Leeds." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -100,60 +102,37 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Routes on the transport network</h1>
+    
+    <div class="hidden name"><code>routes_leeds_foot_10.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This dataset represents routes associated with the top 10
+commuter 'desire lines' in Leeds.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='va'>routes_leeds_foot_10</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="centroids_leeds.html">centroids_leeds</a></code> </p>
-        </td>
-        <td><p>Centroids of administrative (MSOA) zones in Leeds, UK</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_td.html">get_td()</a></code> </p>
-        </td>
-        <td><p>Get transport data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="od_leeds.html">od_leeds</a></code> </p>
-        </td>
-        <td><p>Origin-destination data from Leeds, UK</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="routes_leeds_foot_10.html">routes_leeds_foot_10</a></code> </p>
-        </td>
-        <td><p>Routes on the transport network</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 10 rows and 22 variables:</p><dl>
+<dt><code>distance</code></dt><dd><p>double Distance in m according to OSRM</p></dd>
+<dt><code>duration</code></dt><dd><p>double Duration in seconds according to OSRM</p></dd>
+<dt><code>geometry</code></dt><dd><p>list Geometry</p></dd>
+
+</dl>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>routes_leeds_foot_10</span><span class='op'>$</span><span class='va'>geometry</span>, lwd <span class='op'>=</span> <span class='fl'>6</span>, col <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>routes_leeds_bike_10</span><span class='op'>$</span><span class='va'>geometry</span>, lwd <span class='op'>=</span> <span class='fl'>4</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>routes_leeds_car_10</span><span class='op'>$</span><span class='va'>geometry</span>, lwd <span class='op'>=</span> <span class='fl'>2</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='routes_leeds_foot_10-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
