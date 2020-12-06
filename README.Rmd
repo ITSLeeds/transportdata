@@ -26,7 +26,8 @@ knitr::opts_chunk$set(
 
 
 `transportdata` is a package containing transport datasets for teaching, methodological research and software development (e.g. for benchmarking).
-Simply put, the aim is for it to be like `spData`, a package used for teaching and demonstrating spatial data methods, but for transport/mobility researchers using R.
+The aim is for it to be for people working with transport data what `spData`, a package used for teaching and demonstrating spatial data methods, is for people working with spatial data.
+The package will be especially useful for transport/mobility researchers using R.
 
 # Installation
 
@@ -97,7 +98,7 @@ dim(centroids_leeds)
 
 ## Route data
 
-```{r}
+```{r, eval=FALSE}
 desire_lines_leeds = od::od_to_sf(od_leeds, centroids_leeds)
 routes_leeds_walk = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "foot")
 mapview::mapview(routes_leeds_walk)
@@ -109,18 +110,19 @@ piggyback::pb_upload("routes_leeds_walk.Rds")
 
 routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "bike")
 saveRDS(routes_leeds_bike, "routes_leeds_bike.Rds")
-file.size("routes_leeds_bike.Rds") / 1e6 # 1.6 mb!
+file.size("routes_leeds_bike.Rds") / 1e6 
 rnet_leeds_bike = overline(routes_leeds_bike, "bicycle")
 plot(rnet_leeds_bike["bicycle"], lwd = rnet_leeds_bike$bicycle / 500)
 piggyback::pb_upload("routes_leeds_bike.Rds")
 
-routes_leeds_bike = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "car")
+routes_leeds_car = route(l = desire_lines_leeds, route_fun = route_osrm, osrm.profile = "car")
 saveRDS(routes_leeds_car, "routes_leeds_car.Rds")
-file.size("routes_leeds_car.Rds") / 1e6 # 1.6 mb!
+file.size("routes_leeds_car.Rds") / 1e6 
 rnet_leeds_car = overline(routes_leeds_car, "car_driver")
 plot(rnet_leeds_car["car_driver"], lwd = rnet_leeds_car$car_driver / 500)
 piggyback::pb_upload("routes_leeds_car.Rds")
 
+routes_leeds_walk = routes
 ```
 
 
