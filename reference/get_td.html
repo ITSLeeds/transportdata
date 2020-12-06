@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • transportdata</title>
+<title>Get transport data — get_td • transportdata</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Get transport data — get_td" />
+<meta property="og:description" content="Get transport data" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -100,54 +101,54 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Get transport data</h1>
+    
+    <div class="hidden name"><code>get_td.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Get transport data</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>get_td</span><span class='op'>(</span>
+  <span class='va'>file_name</span>,
+  base_url <span class='op'>=</span> <span class='st'>"https://github.com/ITSLeeds/transportdata/releases/download/0.1/"</span>,
+  full_url <span class='op'>=</span> <span class='cn'>NULL</span>,
+  download <span class='op'>=</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='st'>"\\.Rds"</span>, x <span class='op'>=</span> <span class='fu'>add_extension</span><span class='op'>(</span><span class='va'>file_name</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="centroids_leeds.html">centroids_leeds</a></code> </p>
-        </td>
-        <td><p>Centroids of administrative (MSOA) zones in Leeds, UK</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_td.html">get_td()</a></code> </p>
-        </td>
-        <td><p>Get transport data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="od_leeds.html">od_leeds</a></code> </p>
-        </td>
-        <td><p>Origin-destination data from Leeds, UK</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file_name</th>
+      <td><p>The name of the file to download, with or without extension</p></td>
+    </tr>
+    <tr>
+      <th>base_url</th>
+      <td><p>Where to download the data from? The <code>transportdata</code> repo
+by default</p></td>
+    </tr>
+    <tr>
+      <th>full_url</th>
+      <td><p>The full URL of the file to download. Usually not needed.</p></td>
+    </tr>
+    <tr>
+      <th>download</th>
+      <td><p>Should the file be downloaded to disk? <code>FALSE</code>
+by default unless the file is not an <code>Rds</code> file.</p></td>
+    </tr>
     </table>
-  </div>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># piggyback::pb_download_url("routes_leeds_foot.Rds")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
+<span class='va'>rlw</span> <span class='op'>=</span> <span class='fu'>get_td</span><span class='op'>(</span>file_name <span class='op'>=</span> <span class='st'>"routes_leeds_foot"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_foot.Rds</span></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
