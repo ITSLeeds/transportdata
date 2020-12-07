@@ -4,8 +4,10 @@ transportdata
 -   [1 Installation](#installation)
 -   [2 Datasets](#datasets)
     -   [2.1 Origin-destination data](#origin-destination-data)
-    -   [2.2 Centroid data](#centroid-data)
-    -   [2.3 Route data](#route-data)
+    -   [2.2 Zone data](#zone-data)
+    -   [2.3 Centroid data](#centroid-data)
+    -   [2.4 Route data](#route-data)
+    -   [2.5 Air quality data](#air-quality-data)
 -   [3 Code of Conduct](#code-of-conduct)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -86,7 +88,32 @@ dim(transportdata::od_leeds)
 #> [1] 948  18
 ```
 
-## 2.2 Centroid data
+## 2.2 Zone data
+
+``` r
+z = pct::get_pct_zones("west-yorkshire", geography = "msoa")
+zones_leeds = z %>% 
+  filter(lad_name == "Leeds") %>% 
+  select(geo_code:taxi_other, dutch_slc)
+usethis::use_data(zones_leeds)
+```
+
+``` r
+dim(zones_leeds)
+#> [1] 107  15
+names(zones_leeds)
+#>  [1] "geo_code"      "geo_name"      "lad11cd"       "lad_name"     
+#>  [5] "all"           "bicycle"       "foot"          "car_driver"   
+#>  [9] "car_passenger" "motorbike"     "train_tube"    "bus"          
+#> [13] "taxi_other"    "dutch_slc"     "geometry"
+plot(zones_leeds[5:14])
+#> Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to plot
+#> all
+```
+
+<img src="man/figures/README-zones-1.png" width="100%" />
+
+## 2.3 Centroid data
 
 ``` r
 dim(centroids_leeds)
@@ -98,7 +125,7 @@ plot(centroids_leeds)
 
 <img src="man/figures/README-centroids-1.png" width="100%" />
 
-## 2.3 Route data
+## 2.4 Route data
 
 The route data was generated as follows:
 
@@ -154,6 +181,21 @@ plot(rnet_leeds_car["car_driver"], lwd = rnet_leeds_car$car_driver / 500)
 ```
 
 <img src="man/figures/README-routes-rnet-1.png" width="33%" /><img src="man/figures/README-routes-rnet-2.png" width="33%" /><img src="man/figures/README-routes-rnet-3.png" width="33%" />
+
+## 2.5 Air quality data
+
+Data on air quality was obtained as follows:
+
+``` r
+install.packages("openair")
+library(openair)
+all_sites = importMeta()
+# View(all_sites)
+all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"))
+headingley = importAURN(site = "LED6", year = 2015:2019, pollutant = c("nox", "no2"), )
+
+TheilSen(headingley, pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE)
+```
 
 # 3 Code of Conduct
 

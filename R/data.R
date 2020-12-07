@@ -32,6 +32,21 @@
 #' hist(od_leeds$bicycle, breaks = b)
 "od_leeds"
 
+#' @title Zones of administrative (MSOA) zones in Leeds, UK
+#' @description This dataset contains polygons and Census travel to work data associated with
+#' administrative (MSOA) zones in Leeds, UK
+#' @format A spatial (sf) data frame with 107 rows and 15 variables (modes same as `od_leeds` dataset).
+#' \describe{
+#'   \item{\code{geo_code}}{character geo_code of the unique zones}
+#'   \item{\code{dutch_slc}}{Number who cycle to work under the PCT's Go Dutch scenario}
+#'}
+#' @examples
+#' zones_leeds
+#' dim(zones_leeds)
+#' library(sf)
+#' plot(zones_leeds)
+"zones_leeds"
+
 #' @title Centroids of administrative (MSOA) zones in Leeds, UK
 #' @description This dataset contains population-weighted centroids in
 #' administrative (MSOA) zones in Leeds, UK

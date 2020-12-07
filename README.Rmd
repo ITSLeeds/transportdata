@@ -88,6 +88,24 @@ usethis::use_data(od_leeds, overwrite = TRUE)
 dim(transportdata::od_leeds)
 ```
 
+## Zone data
+
+```{r, eval=FALSE}
+z = pct::get_pct_zones("west-yorkshire", geography = "msoa")
+zones_leeds = z %>% 
+  filter(lad_name == "Leeds") %>% 
+  select(geo_code:taxi_other, dutch_slc)
+usethis::use_data(zones_leeds)
+```
+
+
+```{r zones}
+dim(zones_leeds)
+names(zones_leeds)
+plot(zones_leeds[5:14])
+```
+
+
 ## Centroid data
 
 ```{r, eval=FALSE, echo=FALSE}
@@ -172,6 +190,22 @@ plot(rnet_leeds_bike["bicycle"], lwd = rnet_leeds_bike$bicycle / 500)
 rnet_leeds_car = overline(routes_leeds_car, "car_driver")
 plot(rnet_leeds_car["car_driver"], lwd = rnet_leeds_car$car_driver / 500)
 ```
+
+## Air quality data
+
+Data on air quality was obtained as follows:
+
+```{r, eval=FALSE}
+install.packages("openair")
+library(openair)
+all_sites = importMeta()
+# View(all_sites)
+all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"))
+headingley = importAURN(site = "LED6", year = 2015:2019, pollutant = c("nox", "no2"), )
+
+TheilSen(headingley, pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE)
+```
+
 
 
 
