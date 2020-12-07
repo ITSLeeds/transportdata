@@ -96,3 +96,13 @@
 #' names(air_quality_leeds)
 #' table(air_quality_leeds$site)
 "air_quality_leeds"
+
+#' @title Time use survey data
+#' @description
+#'
+#' See the [data dictionary for description](http://apollochoicemodelling.com/files/apollo_timeUseData_dictionary.pdf)
+#'
+#' @format A data frame with 2826 rows and 20 variables.
+#' @examples
+#' head(time_survey_leeds)
+"time_survey_leeds"

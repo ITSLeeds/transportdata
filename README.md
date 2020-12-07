@@ -8,6 +8,7 @@ transportdata
     -   [2.3 Centroid data](#centroid-data)
     -   [2.4 Route data](#route-data)
     -   [2.5 Air quality data](#air-quality-data)
+    -   [2.6 Time survey data](#time-survey-data)
 -   [3 Code of Conduct](#code-of-conduct)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -243,6 +244,29 @@ tm_shape(air_quality_summary, bbox = tmaptools::bb(air_quality_leeds, 1.5)) +
 ```
 
 <img src="man/figures/README-airqmap-1.png" width="100%" />
+
+## 2.6 Time survey data
+
+``` r
+u = "http://apollochoicemodelling.com/files/apollo_timeUseData.csv"
+time_survey_leeds = readr::read_csv(u)
+usethis::use_data(time_survey_leeds)
+```
+
+``` r
+head(time_survey_leeds)
+#> # A tibble: 6 x 20
+#>   indivID   day   date budget t_a01 t_a02 t_a03 t_a04 t_a05 t_a06 t_a07 t_a08
+#>     <dbl> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1   19209     2 2.02e7   1440    39     0     0    54     4     0     0     0
+#> 2   19209     3 2.02e7   1440    23     0     0     0     0     0     0     0
+#> 3   19209     7 2.02e7   1440     0     0     0   140     0     0     0     0
+#> 4   19209     8 2.02e7   1440    89     0     0    43     0     1   164     0
+#> 5   19209     9 2.02e7   1440   727     0     0   112     0     0     0     0
+#> 6   56459     2 2.02e7   1440   346   511     0     0     0     0     0     0
+#> # … with 8 more variables: t_a09 <dbl>, t_a10 <dbl>, t_a11 <dbl>, t_a12 <dbl>,
+#> #   female <dbl>, age <dbl>, occ_full_time <dbl>, weekend <dbl>
+```
 
 # 3 Code of Conduct
 

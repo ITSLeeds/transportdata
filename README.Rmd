@@ -242,6 +242,19 @@ tm_shape(air_quality_summary, bbox = tmaptools::bb(air_quality_leeds, 1.5)) +
   tm_lines() 
 ```
 
+## Time survey data
+
+```{r, eval=FALSE}
+u = "http://apollochoicemodelling.com/files/apollo_timeUseData.csv"
+time_survey_leeds = readr::read_csv(u)
+usethis::use_data(time_survey_leeds)
+```
+
+```{r time}
+head(time_survey_leeds)
+```
+
+
 
 
 # Code of Conduct
