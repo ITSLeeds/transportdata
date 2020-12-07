@@ -71,8 +71,10 @@
 <a href="#datasets">2 Datasets</a>
 <ul>
 <li><a href="#origin-destination-data">2.1 Origin-destination data</a></li>
-<li><a href="#centroid-data">2.2 Centroid data</a></li>
-<li><a href="#route-data">2.3 Route data</a></li>
+<li><a href="#zone-data">2.2 Zone data</a></li>
+<li><a href="#centroid-data">2.3 Centroid data</a></li>
+<li><a href="#route-data">2.4 Route data</a></li>
+<li><a href="#air-quality-data">2.5 Air quality data</a></li>
 </ul>
 </li>
 <li><a href="#code-of-conduct">3 Code of Conduct</a></li>
@@ -123,10 +125,32 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="fu">transportdata</span><span class="fu">::</span><span class="va"><a href="reference/od_leeds.html">od_leeds</a></span><span class="op">)</span>
 <span class="co">#&gt; [1] 948  18</span></code></pre></div>
 </div>
-<div id="22-centroid-data" class="section level2">
+<div id="22-zone-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#22-centroid-data" class="anchor"></a>2.2 Centroid data</h2>
+<a href="#22-zone-data" class="anchor"></a>2.2 Zone data</h2>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">z</span> <span class="op">=</span> <span class="fu">pct</span><span class="fu">::</span><span class="fu"><a href="https://itsleeds.github.io/pct/reference/get_pct_zones.html">get_pct_zones</a></span><span class="op">(</span><span class="st">"west-yorkshire"</span>, geography <span class="op">=</span> <span class="st">"msoa"</span><span class="op">)</span>
+<span class="va">zones_leeds</span> <span class="op">=</span> <span class="va">z</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">lad_name</span> <span class="op">==</span> <span class="st">"Leeds"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo_code</span><span class="op">:</span><span class="va">taxi_other</span>, <span class="va">dutch_slc</span><span class="op">)</span>
+<span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">zones_leeds</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">zones_leeds</span><span class="op">)</span>
+<span class="co">#&gt; [1] 107  15</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">zones_leeds</span><span class="op">)</span>
+<span class="co">#&gt;  [1] "geo_code"      "geo_name"      "lad11cd"       "lad_name"     </span>
+<span class="co">#&gt;  [5] "all"           "bicycle"       "foot"          "car_driver"   </span>
+<span class="co">#&gt;  [9] "car_passenger" "motorbike"     "train_tube"    "bus"          </span>
+<span class="co">#&gt; [13] "taxi_other"    "dutch_slc"     "geometry"</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">zones_leeds</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span><span class="op">)</span>
+<span class="co">#&gt; Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to plot</span>
+<span class="co">#&gt; all</span></code></pre></div>
+<p><img src="reference/figures/README-zones-1.png" width="100%"></p>
+</div>
+<div id="23-centroid-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#23-centroid-data" class="anchor"></a>2.3 Centroid data</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">centroids_leeds</span><span class="op">)</span>
 <span class="co">#&gt; [1] 107   2</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">centroids_leeds</span><span class="op">)</span>
@@ -134,11 +158,11 @@
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">centroids_leeds</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-centroids-1.png" width="100%"></p>
 </div>
-<div id="23-route-data" class="section level2">
+<div id="24-route-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#23-route-data" class="anchor"></a>2.3 Route data</h2>
+<a href="#24-route-data" class="anchor"></a>2.4 Route data</h2>
 <p>The route data was generated as follows:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">od_interzonal</span> <span class="op">=</span> <span class="va">od_leeds</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">geo_code1</span> <span class="op">!=</span> <span class="va">geo_code2</span><span class="op">)</span>
 <span class="va">desire_lines_leeds</span> <span class="op">=</span> <span class="fu">od</span><span class="fu">::</span><span class="fu">od_to_sf</span><span class="op">(</span><span class="va">od_interzonal</span>, <span class="va">centroids_leeds</span><span class="op">)</span>
@@ -151,25 +175,25 @@
 <span class="co">#&gt; Warning: plotting the first 10 out of 18 attributes; use max.plot = 18 to plot</span>
 <span class="co">#&gt; all</span></code></pre></div>
 <p><img src="reference/figures/README-desire-1.png" width="100%"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get route data for top 10 routes for different modes</span>
 <span class="va">routes_leeds_foot_10</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds_10</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"foot"</span><span class="op">)</span>
 <span class="va">routes_leeds_bike_10</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds_10</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"bike"</span><span class="op">)</span>
 <span class="va">routes_leeds_car_10</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/route.html">route</a></span><span class="op">(</span>l <span class="op">=</span> <span class="va">desire_lines_leeds_10</span>, route_fun <span class="op">=</span> <span class="va">route_osrm</span>, osrm.profile <span class="op">=</span> <span class="st">"car"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">routes_leeds_foot_10</span><span class="op">$</span><span class="va">geometry</span>, lwd <span class="op">=</span> <span class="fl">6</span>, col <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">routes_leeds_bike_10</span><span class="op">$</span><span class="va">geometry</span>, lwd <span class="op">=</span> <span class="fl">4</span>, col <span class="op">=</span> <span class="st">"blue"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">routes_leeds_car_10</span><span class="op">$</span><span class="va">geometry</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"red"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-routes-10-1.png" width="100%"></p>
 <p>You can get the full routes as follows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">routes_leeds_foot</span> <span class="op">=</span> <span class="fu"><a href="reference/get_td.html">get_td</a></span><span class="op">(</span><span class="st">"routes_leeds_foot"</span><span class="op">)</span>
 <span class="co">#&gt; Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_foot.Rds</span>
 <span class="va">routes_leeds_bike</span> <span class="op">=</span> <span class="fu"><a href="reference/get_td.html">get_td</a></span><span class="op">(</span><span class="st">"routes_leeds_bike"</span><span class="op">)</span>
 <span class="co">#&gt; Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_bike.Rds</span>
 <span class="va">routes_leeds_car</span> <span class="op">=</span> <span class="fu"><a href="reference/get_td.html">get_td</a></span><span class="op">(</span><span class="st">"routes_leeds_car"</span><span class="op">)</span>
 <span class="co">#&gt; Reading in the file from https://github.com/ITSLeeds/transportdata/releases/download/0.1/routes_leeds_car.Rds</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rnet_leeds_foot</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_foot</span>, <span class="st">"foot"</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">rnet_leeds_foot</span><span class="op">[</span><span class="st">"foot"</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="va">rnet_leeds_foot</span><span class="op">$</span><span class="va">foot</span> <span class="op">/</span> <span class="fl">500</span><span class="op">)</span>
 <span class="va">rnet_leeds_bike</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_bike</span>, <span class="st">"bicycle"</span><span class="op">)</span>
@@ -177,6 +201,20 @@
 <span class="va">rnet_leeds_car</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/overline.html">overline</a></span><span class="op">(</span><span class="va">routes_leeds_car</span>, <span class="st">"car_driver"</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">rnet_leeds_car</span><span class="op">[</span><span class="st">"car_driver"</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="va">rnet_leeds_car</span><span class="op">$</span><span class="va">car_driver</span> <span class="op">/</span> <span class="fl">500</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-routes-rnet-1.png" width="33%"><img src="reference/figures/README-routes-rnet-2.png" width="33%"><img src="reference/figures/README-routes-rnet-3.png" width="33%"></p>
+</div>
+<div id="25-air-quality-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#25-air-quality-data" class="anchor"></a>2.5 Air quality data</h2>
+<p>Data on air quality was obtained as follows:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"openair"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">openair</span><span class="op">)</span>
+<span class="va">all_sites</span> <span class="op">=</span> <span class="fu">importMeta</span><span class="op">(</span><span class="op">)</span>
+<span class="co"># View(all_sites)</span>
+<span class="va">all_sites_sf</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">all_sites</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"longitude"</span>, <span class="st">"latitude"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">headingley</span> <span class="op">=</span> <span class="fu">importAURN</span><span class="op">(</span>site <span class="op">=</span> <span class="st">"LED6"</span>, year <span class="op">=</span> <span class="fl">2015</span><span class="op">:</span><span class="fl">2019</span>, pollutant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nox"</span>, <span class="st">"no2"</span><span class="op">)</span>, <span class="op">)</span>
+
+<span class="fu">TheilSen</span><span class="op">(</span><span class="va">headingley</span>, pollutant <span class="op">=</span> <span class="st">"no2"</span>, ylab <span class="op">=</span> <span class="st">"NO2 (ug/m3)"</span>, deseason <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="3-code-of-conduct" class="section level1">
