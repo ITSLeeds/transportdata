@@ -13,7 +13,9 @@ License: MIT + file LICENSE
 Suggests: 
     sf,
     pct,
-    dplyr
+    dplyr,
+    tmap,
+    openair
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

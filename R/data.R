@@ -77,3 +77,22 @@
 #' plot(routes_leeds_bike_10$geometry, lwd = 4, col = "blue", add = TRUE)
 #' plot(routes_leeds_car_10$geometry, lwd = 2, col = "red", add = TRUE)
 "routes_leeds_foot_10"
+
+#' @title Air quality data at two points in Leeds
+#' @description This dataset represents routes associated with the top 10
+#'   commuter 'desire lines' in Leeds.
+#' @format A data frame with 10 rows and 22 variables:
+#' \describe{
+#'   \item{\code{site}}{site name}
+#'   \item{\code{code}}{site code}
+#'   \item{\code{site_type}}{site type}
+#'   \item{\code{geometry}}{list Geometry}
+#'   \item{\code{date}}{date}
+#'   \item{\code{nox}}{concentration of nox}
+#'   \item{\code{no2}}{concentration of no2}
+#'}
+#' @examples
+#' dim(air_quality_leeds)
+#' names(air_quality_leeds)
+#' table(air_quality_leeds$site)
+"air_quality_leeds"

@@ -200,13 +200,47 @@ install.packages("openair")
 library(openair)
 all_sites = importMeta()
 # View(all_sites)
-all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"))
-headingley = importAURN(site = "LED6", year = 2015:2019, pollutant = c("nox", "no2"), )
-
-TheilSen(headingley, pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE)
+all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"), crs = 4326)
+leeds_sites = all_sites_sf[zones_leeds, ]
+headingley = importAURN(site = "LED6", year = 2017:2019, pollutant = c("nox", "no2"))
+summary(headingley)
+table(headingley$site)
+air_quality_leeds_raw = importAURN(site = leeds_sites$code, year = 2017:2019, pollutant = c("nox", "no2"))
+air_quality_leeds = right_join(leeds_sites, air_quality_leeds_raw)
+usethis::use_data(air_quality_leeds, overwrite = TRUE)
 ```
 
 
+```{r airq, out.width="49%", fig.show='hold'}
+library(openair)
+dim(air_quality_leeds)
+names(air_quality_leeds)
+table(air_quality_leeds$site)
+air_quality_leeds %>% 
+  sf::st_drop_geometry() %>% 
+  filter(site == "Leeds Centre") %>% 
+  TheilSen(pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE, main = "Leeds Centre")
+air_quality_leeds %>% 
+  sf::st_drop_geometry() %>% 
+  filter(site == "Leeds Headingley Kerbside") %>% 
+  TheilSen(pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE, main = "Leeds Headingley Kerbside")
+```
+
+
+```{r airqmap}
+air_quality_summary = air_quality_leeds %>% 
+  group_by(site, year = substring(date, 1, 4)) %>% 
+  summarise(
+    mean_no2 = mean(no2, na.rm = TRUE),
+    mean_nox = mean(nox, na.rm = TRUE)
+    )
+library(tmap)
+tm_shape(air_quality_summary, bbox = tmaptools::bb(air_quality_leeds, 1.5)) +
+  tm_dots("mean_nox", size = 5) +
+  tm_facets(by = "year", nrow = 1) +
+  tm_shape(routes_leeds_foot_10) +
+  tm_lines() 
+```
 
 
 

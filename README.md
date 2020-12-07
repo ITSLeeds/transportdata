@@ -191,11 +191,58 @@ install.packages("openair")
 library(openair)
 all_sites = importMeta()
 # View(all_sites)
-all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"))
-headingley = importAURN(site = "LED6", year = 2015:2019, pollutant = c("nox", "no2"), )
-
-TheilSen(headingley, pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE)
+all_sites_sf = sf::st_as_sf(all_sites, coords = c("longitude", "latitude"), crs = 4326)
+leeds_sites = all_sites_sf[zones_leeds, ]
+headingley = importAURN(site = "LED6", year = 2017:2019, pollutant = c("nox", "no2"))
+summary(headingley)
+table(headingley$site)
+air_quality_leeds_raw = importAURN(site = leeds_sites$code, year = 2017:2019, pollutant = c("nox", "no2"))
+air_quality_leeds = right_join(leeds_sites, air_quality_leeds_raw)
+usethis::use_data(air_quality_leeds, overwrite = TRUE)
 ```
+
+``` r
+library(openair)
+dim(air_quality_leeds)
+#> [1] 52560     7
+names(air_quality_leeds)
+#> [1] "site"      "code"      "site_type" "geometry"  "date"      "nox"      
+#> [7] "no2"
+table(air_quality_leeds$site)
+#> 
+#>              Leeds Centre Leeds Headingley Kerbside 
+#>                     26280                     26280
+air_quality_leeds %>% 
+  sf::st_drop_geometry() %>% 
+  filter(site == "Leeds Centre") %>% 
+  TheilSen(pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE, main = "Leeds Centre")
+#> [1] "Taking bootstrap samples. Please wait."
+air_quality_leeds %>% 
+  sf::st_drop_geometry() %>% 
+  filter(site == "Leeds Headingley Kerbside") %>% 
+  TheilSen(pollutant = "no2", ylab = "NO2 (ug/m3)", deseason = TRUE, main = "Leeds Headingley Kerbside")
+#> [1] "Taking bootstrap samples. Please wait."
+```
+
+<img src="man/figures/README-airq-1.png" width="49%" /><img src="man/figures/README-airq-2.png" width="49%" />
+
+``` r
+air_quality_summary = air_quality_leeds %>% 
+  group_by(site, year = substring(date, 1, 4)) %>% 
+  summarise(
+    mean_no2 = mean(no2, na.rm = TRUE),
+    mean_nox = mean(nox, na.rm = TRUE)
+    )
+#> `summarise()` regrouping output by 'site' (override with `.groups` argument)
+library(tmap)
+tm_shape(air_quality_summary, bbox = tmaptools::bb(air_quality_leeds, 1.5)) +
+  tm_dots("mean_nox", size = 5) +
+  tm_facets(by = "year", nrow = 1) +
+  tm_shape(routes_leeds_foot_10) +
+  tm_lines() 
+```
+
+<img src="man/figures/README-airqmap-1.png" width="100%" />
 
 # 3 Code of Conduct
 
