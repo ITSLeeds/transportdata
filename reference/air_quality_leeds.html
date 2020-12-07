@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • transportdata</title>
+<title>Air quality data at two points in Leeds — air_quality_leeds • transportdata</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Air quality data at two points in Leeds — air_quality_leeds" />
+<meta property="og:description" content="This dataset represents routes associated with the top 10
+commuter 'desire lines' in Leeds." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -100,72 +102,44 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Air quality data at two points in Leeds</h1>
+    
+    <div class="hidden name"><code>air_quality_leeds.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This dataset represents routes associated with the top 10
+commuter 'desire lines' in Leeds.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='va'>air_quality_leeds</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="air_quality_leeds.html">air_quality_leeds</a></code> </p>
-        </td>
-        <td><p>Air quality data at two points in Leeds</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="centroids_leeds.html">centroids_leeds</a></code> </p>
-        </td>
-        <td><p>Centroids of administrative (MSOA) zones in Leeds, UK</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_td.html">get_td()</a></code> </p>
-        </td>
-        <td><p>Get transport data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="od_leeds.html">od_leeds</a></code> </p>
-        </td>
-        <td><p>Origin-destination data from Leeds, UK</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="routes_leeds_foot_10.html">routes_leeds_foot_10</a></code> </p>
-        </td>
-        <td><p>Routes on the transport network</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="zones_leeds.html">zones_leeds</a></code> </p>
-        </td>
-        <td><p>Zones of administrative (MSOA) zones in Leeds, UK</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 10 rows and 22 variables:</p><dl>
+<dt><code>site</code></dt><dd><p>site name</p></dd>
+<dt><code>code</code></dt><dd><p>site code</p></dd>
+<dt><code>site_type</code></dt><dd><p>site type</p></dd>
+<dt><code>geometry</code></dt><dd><p>list Geometry</p></dd>
+<dt><code>date</code></dt><dd><p>date</p></dd>
+<dt><code>nox</code></dt><dd><p>concentration of nox</p></dd>
+<dt><code>no2</code></dt><dd><p>concentration of no2</p></dd>
+
+</dl>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>air_quality_leeds</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 52560     7</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>air_quality_leeds</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "site"      "code"      "site_type" "geometry"  "date"      "nox"      
+#&gt; [7] "no2"      </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>air_quality_leeds</span><span class='op'>$</span><span class='va'>site</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt;              Leeds Centre Leeds Headingley Kerbside 
+#&gt;                     26280                     26280 </div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
